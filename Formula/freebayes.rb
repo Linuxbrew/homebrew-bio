@@ -3,8 +3,8 @@ class Freebayes < Formula
   desc "Bayesian variant discovery and genotyping"
   homepage "https://github.com/ekg/freebayes"
   url "https://github.com/ekg/freebayes.git",
-      tag:      "v1.3.2",
-      revision: "54bf40915ae7e46798503471ac57f593efdb5493"
+      tag:      "v1.3.4",
+      revision: "972a37a6f365ee5ba507d1c76924fff59b36fd54"
   license "MIT"
   head "https://github.com/ekg/freebayes.git"
 
@@ -37,13 +37,6 @@ class Freebayes < Formula
     # Works around ld: internal error: atom not found in symbolIndex
     # Reported 21 Jul 2014 https://github.com/ekg/freebayes/issues/83
     inreplace "vcflib/smithwaterman/Makefile", "-Wl,-s", "" if OS.mac?
-
-    # Fixes bug ../vcflib/scripts/vcffirstheader: file not found
-    # Reported 1 Apr 2017 https://github.com/ekg/freebayes/issues/376
-    inreplace "scripts/freebayes-parallel" do |s|
-      s.gsub! "../vcflib/scripts/vcffirstheader", "vcffirstheader"
-      s.gsub! "../vcflib/bin/vcfstreamsort", "vcfstreamsort"
-    end
 
     system "make"
 
