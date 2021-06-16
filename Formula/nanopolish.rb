@@ -3,8 +3,8 @@ class Nanopolish < Formula
   desc "Signal-level algorithms for MinION data"
   homepage "https://github.com/jts/nanopolish"
   url "https://github.com/jts/nanopolish.git",
-      tag:      "v0.12.0",
-      revision: "6a1333c0106e0969a13ed8fc40153c18e8da4790"
+      tag:      "v0.13.2",
+      revision: "46b65bbabf670ea42a9e446540a6e81efc2e4c58"
   license "MIT"
   head "https://github.com/jts/nanopolish.git"
 
@@ -18,29 +18,11 @@ class Nanopolish < Formula
     sha256 cellar: :any, catalina:     "96585ee4d83de6848fcb18f15499b07bc90bb3b1dec358aa1040d307d2c64df3"
     sha256 cellar: :any, x86_64_linux: "024891195b39013008a3a2d03946617697602335077d36930e975091232ca8b8"
   end
-
-  depends_on "eigen" => :build # static link
+  
   depends_on "wget" => :build
 
-  depends_on "gcc" if OS.mac? # needs openmp
-  depends_on "hdf5"
-  depends_on "htslib"
-  depends_on "python@3.8" # for scripts
-
-  uses_from_macos "bzip2"
-  uses_from_macos "zlib"
-
-  fails_with :clang # needs openmp
-
   def install
-    # remove this when 0.12.1 comes out
-    # https://github.com/jts/nanopolish/commit/466c63d24896084535e8072e20d0aabc981a9888
-    inreplace "src/nanopolish_call_methylation.cpp", "<omp.h>", " <omp.h>\n#include <zlib.h>"
-
-    system "make", "EIGEN=1", "HDF5=1", "HTS=1", "EIGEN_INCLUDE=-I#{Formula["eigen"].opt_include}/eigen3"
-    prefix.install "scripts", "nanopolish"
-    bin.install_symlink "../nanopolish"
-    pkgshare.install "test"
+    system "make"
   end
 
   test do
