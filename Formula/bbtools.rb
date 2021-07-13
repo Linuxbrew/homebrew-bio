@@ -1,8 +1,8 @@
 class Bbtools < Formula
   desc "Suite of Brian Bushnell's tools for manipulating reads"
   homepage "https://jgi.doe.gov/data-and-tools/bbtools/"
-  url "https://downloads.sourceforge.net/bbmap/BBMap_38.87.tar.gz"
-  sha256 "22ab642b8af88faf208a56763158da895004c5231df572d3163ce52fbfb63240"
+  url "https://downloads.sourceforge.net/bbmap/BBMap_38.89.tar.gz"
+  sha256 "3fe4265894d1233664713f784665dea64cc444bf5bcf48f9ac95e76153abf7f3"
 
   bottle do
     root_url "https://ghcr.io/v2/brewsci/bio"
@@ -20,10 +20,9 @@ class Bbtools < Formula
     end
     prefix.install %w[current jni resources]
     # shell scripts look for ./{current,jni,resources} files, so keep shell scripts
-    # in ./#{prefix} but place symlinks in the ../bin dir for brew to export #{bin}
-    bin.mkpath
-    prefix.install Dir["*.sh"]
-    bin.install_symlink Dir["#{prefix}/*.sh"]
+    # in #{prefix} but place symlinks in the ../bin dir for brew to export #{bin}
+    bin.install Dir["*.sh"]
+    bin.env_script_all_files prefix, JAVA_HOME: "${JAVA_HOME:-#{Formula["openjdk"].opt_prefix}}"
     doc.install %w[license.txt README.md docs/changelog.txt docs/Legal.txt docs/readme.txt docs/ToolDescriptions.txt]
   end
 
